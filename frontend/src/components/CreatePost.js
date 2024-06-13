@@ -6,9 +6,11 @@ const CreatePost = () => {
     const [image, setImage] = useState(null);
     const [imageUrl, setImageUrl] = useState('');
     const [userId, setUserId] = useState('');
+    const [uploadStatus, setUploadStatus] = useState(''); // New state for upload status
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setUploadStatus('Uploading...'); // Set status to uploading
         const formData = new FormData();
         formData.append('description', description);
         formData.append('image', image);
@@ -20,9 +22,11 @@ const CreatePost = () => {
             .then(response => {
                 console.log(response.data);
                 setImageUrl(response.data.imageUrl);
+                setUploadStatus('Uploaded successfully!'); // Set status to success
             })
             .catch(error => {
                 console.error('There was an error uploading the post!', error);
+                setUploadStatus('Upload failed! Please try again.'); // Set status to failure
             });
     };
 
@@ -61,9 +65,16 @@ const CreatePost = () => {
                         />
                         <label htmlFor="userId" className={userId ? 'active' : ''}>User ID</label>
                     </div>
-                    <button className="btn waves-effect waves-light light-blue lighten-1" type="submit">Create Post</button>
+                    <button className="btn waves-effect waves-light light-blue lighten-1" type="submit" >Create Post</button>
                 </div>
             </form>
+            {uploadStatus && (
+                <div className="row">
+                    <div className="col s12">
+                        <p>{uploadStatus}</p>
+                    </div>
+                </div>
+            )}
             {imageUrl && (
                 <div className="row">
                     <div className="col s12">
