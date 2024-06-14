@@ -4,9 +4,13 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const postRoutes = require('./routes/post');
 require('dotenv').config(); // Load environment variables
+const path = require("path")
 const app = express();
 
 app.use(cors());
+const _dirname = path.dirname("");
+const buildpath = path.join(_dirname,"../frontend/build");
+app.use(express.static(buildpath));
 app.use(bodyParser.json());
 app.use('/posts', postRoutes);
 
